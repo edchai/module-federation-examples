@@ -1,5 +1,7 @@
 import moment from "moment";
 import { Dates } from "../types/dates";
+import {Constants} from "../fixtures/constants";
+import {IAllDataFields} from "../types/allDataFields";
 
 export function getDateWithFormat(date: string, format: string): string {
   let days: number;
@@ -45,4 +47,56 @@ function _getRandomString(stringLength: number, from: number = 97, to: number = 
   return Array.from({ length: stringLength }, () =>
       String.fromCharCode(Math.floor(Math.random() * (to - from) + from)),
   ).join('');
+}
+
+// возможность реализовать идею через свич + хардкод
+export function testDataArrayGenerator(sampleName: string): object[] {
+  let testArray: object[] = []
+
+  switch (sampleName) {
+    case 'react-nested-routers':
+      testArray = [
+        {
+          host: 8081,
+          message: Constants.commonPhrases.reactNestedRoutersApp.pagesMessages.page1App1,
+          linkMessage: Constants.elementsText.reactNestedRoutersApp.shellAppTextedLinks[4]
+        },
+        {
+          host: 8082,
+          message: Constants.commonPhrases.reactNestedRoutersApp.pagesMessages.pageAApp2,
+          linkMessage: Constants.elementsText.reactNestedRoutersApp.shellAppTextedLinks[4].replace(Constants.elementsText.reactNestedRoutersApp.replaceValues[0], Constants.elementsText.reactNestedRoutersApp.replaceValues[4])
+        }
+      ]
+      break;
+  }
+
+  return testArray
+}
+
+// динамический метод, требуется разобраться как возвращать hosts не в массиве
+export function getTestDataArrayBody(testData: any[], sampleName: string): any {
+  let testArray: object[] = []
+
+  switch (sampleName) {
+    case 'react-nested-routers':
+      // testArray = [{
+      //   host: testData[0].hosts?.map((host: number) => ({
+      //     host,
+      //   })),
+      // }]
+      testArray = testData.map((data: IAllDataFields) => ({
+      host: data.hosts,
+    }));
+    //   testArray = testData.map(data => {
+    //     data.hosts?.forEach(() => {
+    //
+    //     })
+    //     return {
+    //       host: data.hosts?.toString()
+    //     }
+    //   });
+    //   break;
+  }
+
+  return testArray
 }

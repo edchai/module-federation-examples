@@ -1,11 +1,14 @@
 import { BaseMethods } from "../../cypress/common/base";
 import { baseSelectors } from "../../cypress/common/selectors";
 import { Constants } from "../../cypress/fixtures/constants";
+import {getTestDataArrayBody} from "../../cypress/helpers/base-helper";
 
 const basePage: BaseMethods = new BaseMethods()
 
 describe('React Nested Routers', () => {
     context('It checks app1/app2', () => {
+        // идея по новому варианту прокидывания данных
+        const test = getTestDataArrayBody([{hosts: [8081, 8082]}], 'react-nested-routers')
         const appsData = [
             {
                 host: 8081,
@@ -21,6 +24,9 @@ describe('React Nested Routers', () => {
     
         appsData.forEach((property: { host: number, message: string, linkMessage: string }) => {
             it(`Checks page message visibility`, () => {
+                console.log(test)
+                cy.pause()
+
                 basePage.openLocalhost(property.host)
                 basePage.checkElementWithTextPresence({
                     selector: baseSelectors.tags.coreElements.div,
